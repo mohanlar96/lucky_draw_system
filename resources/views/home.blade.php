@@ -19,7 +19,7 @@
 
                     <ol type="1">
                         @foreach($tickets as $ticket)
-                            <li>{{$ticket->number}}</li>
+                            <li>{{sprintf("%04d",$ticket->number)}}</li>
                         @endforeach
 
                     </ol>

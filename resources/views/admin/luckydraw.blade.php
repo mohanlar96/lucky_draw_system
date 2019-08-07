@@ -12,6 +12,27 @@
             <div class="card">
                 <div class="card-header"> Lucky Draw Pannel  </div>
                 <div class="card-body">
+                    <?php
+                    function render_alert($type='status',$msg){
+                        $alert_class=($type=='status')?'alert-danger':'alert-success';
+                      echo "
+                         <div class='alert $alert_class ' role='alert'>
+                                $msg
+                           <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                              <span aria-hidden='true'>&times;</span>
+                           </button>
+                         </div>
+                          ";
+
+                    }
+
+                    ?>
+                    @if (session('status') )
+                       {{render_alert('status',session('status'))}}
+                    @endif
+                    @if (session('suggest') )
+                         {{render_alert('suggest',session('suggest') )}}
+                    @endif
                     <form action="/admin/lucky/draw" method="post" >
                         @csrf
 
@@ -45,9 +66,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="number" >{{ __('Winning Number') }} </label>
-                            <input type="number" name="number" placeholder="eg:1234" required="true" id="number" class="form-control @error('number') is-invalid @enderror ">
-                            @error('number')
+                            <label for="winning_number" >{{ __('Winning Number') }} </label>
+                            <input type="winning_number" name="winning_number" placeholder="eg:1234" required="true" id="winning_number" class="form-control @error('winning_number') is-invalid @enderror ">
+                            @error('winning_number')
                                     <span class="invalid-feedback" role="alert">
                                           <strong>{{ $message }}</strong>
                                     </span>
@@ -75,20 +96,10 @@
                 var prize= $(this).val();
 
                 if(prize==1)
-                  $("input#number").val('').prop('readonly','readonly');
+                  $("input#winning_number").val('').prop('readonly','readonly');
                 else
-                    $("input#number").val('').removeAttr('readonly');
-
-
+                    $("input#winning_number").val('').removeAttr('readonly');
             });
-
-
-
-
-
-
-
-
         });
     </script>
 @endsection

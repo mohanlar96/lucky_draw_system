@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header"><b><h2>Winner List</h2></b> </div>
                     <div class="card-body">
-                        @if (session('status'))
+                        @if (session('status') )
                             <div class="alert alert-success" role="alert">
                                 {{ session('status') }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -15,6 +15,7 @@
                                 </button>
                             </div>
                         @endif
+
                         <table class="table table-bordered">
                             <thead>
                             <tr>
@@ -34,13 +35,16 @@
                             @foreach($prizes as $prize)
                                 <tr>
                                     <td>{{$prize->name}}</td>
-                                    <td class="@if($prize->winning_number) text-success font-weight-bold @else text-danger @endif ">{{($prize->winning_number)?$prize->winning_number : 'Admin not Draw yet'}}</td>
-                                    <td>{{($prize->winning_number)? $prize->user->name  :'' }}</td>
-                                    <td>{{($prize->winning_number)? $prize->user->email  :'' }}</td>
+
+                                    <td class="@if(isset($prize->winning_number)) text-success font-weight-bold @else text-danger @endif ">{{(isset($prize->winning_number))? sprintf("%04d",$prize->winning_number) : 'Admin not Draw yet'}}</td>
+
+                                    <td>{{(isset($prize->winning_number))? $prize->ticket->user->name  :'' }}</td>
+
+                                    <td>{{(isset($prize->winning_number))? $prize->ticket->user->email  :'' }}</td>
                                    @auth
                                         @if(auth()->user()->isAdmin())
                                             <td>{{($prize->admin_id)? $prize->admin->name  :'' }}</td>
-                                            <td>{{($prize->winning_number)? $prize->updated_at  :'' }}</td>
+                                            <td>{{(isset($prize->winning_number))? $prize->updated_at  :'' }}</td>
                                         @endif
                                     @endauth
                                 </tr>
@@ -51,12 +55,21 @@
 
                         @auth
                             @if(auth()->user()->isAdmin())
-                                <form method="post"  action="{{url('/admin/lucky/reset')}}" >
-                                    @csrf
 
-                                    <button type="submit" class="btn-primary btn">Reset All </button>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <form method="post"  action="{{url('/admin/lucky/reset')}}" >
+                                            @csrf
 
-                                </form>
+                                            <button type="submit" class="btn-primary btn">Reset All </button>
+
+                                        </form>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <a href="{{url('/admin/lucky/draw')}}" class="btn btn-danger float-right">Lucky Draw</a>
+                                    </div>
+                                </div>
+
 
                             @endif
                          @endauth

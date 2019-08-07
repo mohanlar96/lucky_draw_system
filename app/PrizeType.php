@@ -8,10 +8,10 @@ class PrizeType extends Model
 {
     public function admin()
     {
-        return $this->hasOne('App\User','user_id','id');
+        return $this->hasOne('App\User','id','admin_id');
     }
-    public function user()
+    public function ticket()
     {
-        return $this->hasOne('App\User','number','winning_number');
+        return $this->hasOne('App\UserTicket','number','winning_number');
     }
 }

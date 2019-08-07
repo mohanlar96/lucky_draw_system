@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function(){
-    return view('winner')->with('prizes',\App\PrizeType::all());
+    return view('winner')->with('prizes',\App\PrizeType::get());
 });
 
 Auth::routes();
@@ -35,3 +35,6 @@ Route::group(['middleware'=>'auth'],function (){
     Route::post('/user/draw', 'HomeController@draw')->middleware('user');
 
 });
+
+
+Route::get('/run/function','Admin\LuckyDrawController@listOfNumberAllowToWinPrize');
